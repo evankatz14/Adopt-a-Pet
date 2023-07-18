@@ -1,11 +1,12 @@
-import { useContext, useState } from "react";
+import { lazy, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import fetchPet from "./fetchPet";
-import Modal from "./Modal";
 import AdoptedPetContext from "./AdoptedPetContext";
+
+const Modal = lazy(() => import("./Modal"));
 
 const Details = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Details = () => {
   if (results.isLoading) {
     return (
       <div className="loading-pane">
-        <h2 className="loader">...</h2>
+        <h2 className="loader">🦊</h2>
       </div>
     );
   }
