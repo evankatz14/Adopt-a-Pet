@@ -4,14 +4,21 @@ import Results from "./Results";
 import SearchForm from "./SearchForm";
 import fetchSearch from "./fetchSearch";
 import useBreedsList from "./useBreedsList";
+import { Animal } from "./APIResponsesTypes";
+
+export interface RequestParams {
+  animal: Animal;
+  breed: string;
+  location: string;
+}
 
 const SearchParams = () => {
-  const [requestParams, setRequestParams] = useState({
+  const [requestParams, setRequestParams] = useState<RequestParams>({
     location: "",
-    animal: "",
+    animal: "" as Animal,
     breed: "",
   });
-  const [animal, setAnimal] = useState("");
+  const [animal, setAnimal] = useState<Animal>("" as Animal);
   const [breeds] = useBreedsList(animal);
 
   const results = useQuery(["search", requestParams], fetchSearch);

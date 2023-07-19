@@ -2,6 +2,7 @@ import { lazy, Suspense, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AdoptedPetContext from "./AdoptedPetContext";
+import { Pet } from "./APIResponsesTypes";
 
 const Details = lazy(() => import("./Details"));
 const SearchParams = lazy(() => import("./SearchParams"));
@@ -16,7 +17,7 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  const adoptedPet = useState(null);
+  const adoptedPet = useState<Pet | null>(null);
 
   return (
     <QueryClientProvider client={queryClient}>

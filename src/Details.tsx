@@ -1,18 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
 import { lazy, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { PetAPIResponse } from "./APIResponsesTypes";
+import AdoptedPetContext from "./AdoptedPetContext";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import fetchPet from "./fetchPet";
-import AdoptedPetContext from "./AdoptedPetContext";
 
 const Modal = lazy(() => import("./Modal"));
 
 const Details = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  if (!id) {
+    throw new Error("why didn't you provide me with an id???");
+  }
   const results = useQuery(["details", id], fetchPet);
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setAdoptedPet] = useContext(AdoptedPetContext);
 
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +29,10 @@ const Details = () => {
     );
   }
 
-  const pet = results.data.pets[0];
+  const pet = results?.data?.pets[0];
+  if (!pet) {
+    throw new Error("no pet, lol");
+  }
 
   const adoptPet = () => {
     setAdoptedPet(pet);
@@ -58,10 +65,10 @@ const Details = () => {
   );
 };
 
-function DetailsErrorBoundary(props) {
+function DetailsErrorBoundary() {
   return (
     <ErrorBoundary>
-      <Details {...props} />
+      <Details />
     </ErrorBoundary>
   );
 }

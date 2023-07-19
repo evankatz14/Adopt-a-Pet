@@ -1,6 +1,7 @@
 import Pet from "./Pet";
+import { Pet as PetType } from "./APIResponsesTypes";
 
-export default function Results({ pets }) {
+export default function Results({ pets }: { pets: PetType[] }) {
   return (
     <div className="search">
       {!pets.length ? (

@@ -1,23 +1,32 @@
-import { useContext } from "react";
+import { FormEvent, useContext } from "react";
 import AdoptedPetContext from "./AdoptedPetContext";
+import { Animal } from "./APIResponsesTypes";
+import { RequestParams } from "./SearchParams";
 
-const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
+const ANIMALS: Animal[] = ["bird", "cat", "dog", "rabbit", "reptile"];
+
+interface SearchFormProps {
+  animal: string;
+  breeds: string[];
+  setAnimal: (animal: Animal) => void;
+  setRequestParams: (params: RequestParams) => void;
+}
 
 export default function SearchForm({
   animal,
   breeds,
   setAnimal,
   setRequestParams,
-}) {
+}: SearchFormProps) {
   const [adoptedPet] = useContext(AdoptedPetContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
     const obj = {
-      animal: formData.get("animal") ?? "",
-      breed: formData.get("breed") ?? "",
-      location: formData.get("location") ?? "",
+      animal: (formData.get("animal")?.toString() ?? "") as Animal,
+      breed: formData.get("breed")?.toString() ?? "",
+      location: formData.get("location")?.toString() ?? "",
     };
 
     setRequestParams(obj);
@@ -41,7 +50,10 @@ export default function SearchForm({
           name="animal"
           value={animal}
           onChange={(e) => {
-            setAnimal(e.target.value);
+            setAnimal(e.target.value as Animal);
+          }}
+          onBlur={(e) => {
+            setAnimal(e.target.value as Animal);
           }}
         >
           <option />
